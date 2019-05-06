@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['base_url'] = 'http://bikerent.ga/';
+$config['base_url'] = 'http://localhost/TK4_EXT_1';
 
 /*
 |--------------------------------------------------------------------------
