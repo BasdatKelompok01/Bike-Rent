@@ -30,7 +30,7 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('stasiun/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/stasiun/add'), 'class="form-horizontal"');  ?> 
 
 
               <div class="form-group">
@@ -179,4 +179,5 @@
 
 <script>
 $("#stasiun").addClass('active');
+$("#addStasiun").addClass('active');
 </script>    

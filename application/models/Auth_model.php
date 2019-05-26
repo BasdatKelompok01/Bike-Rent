@@ -17,12 +17,14 @@
 				//print_r($query->num_rows());
 				if($query1->num_rows() > 0) {
 					return $result = array(
+						'ktp' => $row1->ktp,
 						'nama' => $row1->nama,
 						'role' => 'Petugas'
 						);
 				}
 				else if($query2->num_rows() > 0) {
 					return $result = array(
+						'ktp' => $row2->ktp,
 						'nama' => $row2->nama,
 						'role' => 'Anggota'
 						);
@@ -31,9 +33,10 @@
 					return false;
 				}
 			}
-			else if ($data['email'] == 'admin@admin.com' && $data['nomorKTP'] == '3271052906960007') {
+			else if ($data['email'] == 'admin@bikerent.com' && $data['nomorKTP'] == '1234567890123456') {
 				return $result = array(
-					'nama' => 'Admin',
+					'ktp' => '1234567890123456',
+					'nama' => 'Administrator',
 					'role' => 'Admin'
 					);
 			}
@@ -98,7 +101,7 @@
 			else {
 				$kode = 1;
 			}
-			$kodemax = 'KAR' . str_pad($kode, 7, 0, STR_PAD_LEFT); 
+			$kodemax = 'ANG' . str_pad($kode, 7, 0, STR_PAD_LEFT); 
 			return $kodemax;
 		}
 	}

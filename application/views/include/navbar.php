@@ -4,9 +4,13 @@
     <!-- Logo -->
     <a href="<?= base_url('admin');?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>Bike</b> Rent</span>
+      <span class="logo-mini">
+        <img src="<?= base_url() ?>public/dist/img/logo.png" alt="BikeRent" width=100>
+      </span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Bike</b> Rent</span>
+      <span class="logo-lg">
+        <img src="<?= base_url() ?>public/dist/img/logo.png" alt="BikeRent" width=100>
+      </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -22,16 +26,16 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="<?= base_url() ?>public/dist/img/avatar5.png" class="user-image" alt="User Image">
               <span class="hidden-xs"><?= ucwords($this->session->userdata('name')); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?= base_url() ?>public/dist/img/avatar5.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Nauman Ahmed - Web Developer
+                <?= ucwords($this->session->userdata('name')); ?> - <?= ucwords($this->session->userdata('role')); ?>
                 </p>
               </li>
               <!-- Menu Footer-->

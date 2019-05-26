@@ -41,6 +41,7 @@
 					$result = $this->auth_model->login($data);
 					if ($result == TRUE) {
 						$admin_data = array(
+							'ktp' => $result['ktp'],
 							'role' => $result['role'],
 						 	'name' => $result['nama']
 						);
@@ -123,7 +124,7 @@
 
 		public function logout(){
 			$this->session->sess_destroy();
-			redirect(base_url('auth/login'), 'refresh');
+			redirect(base_url('index.php/auth/login'), 'refresh');
 		}
 			
 	}

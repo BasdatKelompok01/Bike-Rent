@@ -17,12 +17,12 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('topup/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/topup/add'), 'class="form-horizontal"');  ?> 
               <div class="form-group">
                 <label for="nominal" class="col-sm-2 control-label">Nominal</label>
 
                 <div class="col-sm-9">
-                  <input type="number" name="nominal" class="form-control" id="nominal" placeholder="">
+                  <input type="number" name="nominal" class="form-control" id="nominal" placeholder="" min=0>
                 </div>
               </div>
               <div class="form-group">

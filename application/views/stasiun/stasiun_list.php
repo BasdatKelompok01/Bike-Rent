@@ -8,9 +8,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
-      <!-- <a href="<?= base_url('stasiun/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Stasiun</span></a>
-      <br>&nbsp; -->
-      <table id="example1" class="table table-bordered table-striped ">
+      <table id="tblStasiun" class="table table-bordered table-striped ">
         <thead>
         <tr>
           <th>No</th>
@@ -22,19 +20,23 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Stasiun Basdat Depok 1</td>
-                <td>Beji, Kukusan Depok</td>
-                <td>110100101</td>
-                <td>-12312310</td>
-                <?php if($this->session->userdata('role') == 'Admin') { ?> 
+        <?php $nomor=1; ?>
+        <?php foreach($all_stasiuns as $row): ?>
+          <tr>
+            <td><?= $nomor; ?></td>
+            <td><?= $row['nama']; ?></td>
+            <td><?= $row['alamat']; ?></td>
+            <td><?= $row['lat']; ?></td>
+            <td><?= $row['long']; ?></td>
+            <?php if($this->session->userdata('role') == 'Admin') { ?> 
                 <td align="center">
-                  <a href="<?= base_url('stasiun/edit/1'); ?>" class="btn btn-primary btn-sm">Update</a>
-                  <button class="btn btn-danger btn-sm konfirmasiHapus-pegawai" data-id="1" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
+                  <a href="<?= base_url('index.php/stasiun/edit/' . $row['id_stasiun']); ?>" class="btn btn-primary btn-sm">Update</a>
+                  <button class="btn btn-danger btn-sm konfirmasiHapus-stasiun" data-id="<?php echo $row['id_stasiun']; ?>" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
                 </td>
-                <?php } ?>
-            </tr>
+            <?php } ?>
+          </tr>
+          <?php $nomor++; ?>
+          <?php endforeach; ?>
        </tbody>
        
       </table>
@@ -43,7 +45,7 @@
   </div>
   <!-- /.box -->
   <div id="tempat-modal"></div>
-  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataPegawai', 'Apakah benar ingin menghapus stasiun tersebut?', 'Ya'); ?>
+  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataStasiun', 'Apakah benar ingin menghapus stasiun tersebut?', 'Ya'); ?>
 </section>  
 
 <!-- DataTables -->
@@ -51,26 +53,24 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tblStasiun").DataTable();
   });
-  var id_pegawai;
-	$(document).on("click", ".konfirmasiHapus-pegawai", function() {
-		id_pegawai = $(this).attr("data-id");
+
+  var id_stasiun;
+	$(document).on("click", ".konfirmasiHapus-stasiun", function() {
+		id_stasiun = $(this).attr("data-id");
 	})
 
-	$(document).on("click", ".hapus-dataPegawai", function() {
-		var id = id_pegawai;
+	$(document).on("click", ".hapus-dataStasiun", function() {
+		var id = id_stasiun;
 		
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url('Pegawai/delete'); ?>",
+			url: "<?php echo base_url('index.php/stasiun/del'); ?>",
 			data: "id=" +id
 		})
 		.done(function(data) {
-			$('#konfirmasiHapus').modal('hide');
-			tampilPegawai();
-			$('.msg').html(data);
-			effect_msg();
+      window.location.href="<?php echo site_url('stasiun'); ?>";
 		})
 	})
 </script> 

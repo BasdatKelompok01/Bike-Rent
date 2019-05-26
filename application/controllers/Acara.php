@@ -5,11 +5,13 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('acara_model', 'acara_model');
+			$this->load->model('stasiun_model', 'stasiun_model');
+			$this->load->model('Acara_Stasiun_model', 'Acara_Stasiun_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_acaras'] =  $this->acara_model->get_all_acara();
 			$data['view'] = 'acara/acara_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,39 +19,47 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('judul', 'Judul', 'trim|required');
+				$this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+				$this->form_validation->set_rules('gratis', 'Gratis', 'trim|required');
+				$this->form_validation->set_rules('tglMulai', 'Tanggal Mulai', 'trim|required');
+				$this->form_validation->set_rules('tglSelesai', 'Tanggal Selesai', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'acara/acara_add';
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'judul' => $this->input->post('judul'),
+						'deskripsi' => $this->input->post('deskripsi'),
+						'is_free' => $this->input->post('gratis'),
+						'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
+						'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
-					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('acara'));
+					$result = $this->acara_model->add_acara($data);
+
+					foreach($this->input->post('stasiun') as $sid){
+						$data2 = array(
+							'id_acara' => $result,
+							'id_stasiun' => $sid,
+						);
+						$data2 = $this->security->xss_clean($data2);
+						$result2 = $this->Acara_Stasiun_model->add_acara_stasiun($data2);
+					}
+
+					if($result && $result2){
+						$this->session->set_flashdata('msg', 'Data Acara Berhasil Ditambahkan!');
+						redirect(base_url('index.php/acara'));
 					}
 				}
 			}
 			else{
 				$data['view'] = 'acara/acara_add';
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
 				$this->load->view('layout', $data);
 			}
 			
@@ -57,47 +67,64 @@
 
 		public function edit($id = 0){
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('judul', 'Judul', 'trim|required');
+				$this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+				$this->form_validation->set_rules('gratis', 'Gratis', 'trim|required');
+				$this->form_validation->set_rules('tglMulai', 'Tanggal Mulai', 'trim|required');
+				$this->form_validation->set_rules('tglSelesai', 'Tanggal Selesai', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
+					$data['acara'] = $this->acara_model->get_acara_by_id($id);
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+					$data['acarastasiun'] = $this->Acara_Stasiun_model->get_acara_stasiun($id);
 					$data['view'] = 'acara/acara_edit';
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'judul' => $this->input->post('judul'),
+						'deskripsi' => $this->input->post('deskripsi'),
+						'is_free' => $this->input->post('gratis'),
+						'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
+						'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
-					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('acara'));
+					$result = $this->acara_model->edit_acara($data, $id);					
+
+					foreach($this->input->post('stasiun') as $sid){
+						$data2 = array(
+							'id_acara' => $id,
+							'id_stasiun' => $sid,
+						);
+						$data2 = $this->security->xss_clean($data2);
+						$result2 = $this->Acara_Stasiun_model->edit_acara_stasiun($data2);
+					}
+
+					if($result && $result2){
+						$this->session->set_flashdata('msg', 'Acara Berhasil Diupdate!');
+						redirect(base_url('index.php/acara'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
+				$data['acara'] = $this->acara_model->get_acara_by_id($id);
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+				$data['acarastasiun'] = $this->Acara_Stasiun_model->get_acara_stasiun($id);
 				$data['view'] = 'acara/acara_edit';
 				$this->load->view('layout', $data);
 			}
 		}
 
 		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('acara'));
+			$id = $_POST['id'];
+			$sql1 = 'DELETE FROM acara_stasiun WHERE id_acara = ?';
+			$this->db->query($sql1, array($id));
+
+			$sql2 = 'DELETE FROM acara WHERE id_acara = ?';
+			$this->db->query($sql2, array($id));
+			$this->session->set_flashdata('msg', 'Acara Berhasil Dihapus!');
+			redirect(base_url('index.php/acara'));
 		}
 
 	}

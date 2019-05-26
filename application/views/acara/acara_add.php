@@ -30,10 +30,10 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('penugasan/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/acara/add'), 'class="form-horizontal"');  ?> 
 
             <div class="form-group">
-                <label for="lastname" class="col-sm-3 control-label">Judul</label>
+                <label for="judul" class="col-sm-3 control-label">Judul</label>
 
                 <div class="col-sm-9">
                   <input type="text" name="judul" id="judul" class="form-control">   
@@ -41,7 +41,7 @@
               </div>
 
               <div class="form-group">
-                <label for="lastname" class="col-sm-3 control-label">Deskripsi</label>
+                <label for="deskripsi" class="col-sm-3 control-label">Deskripsi</label>
 
                 <div class="col-sm-9">
                   <input type="text" name="deskripsi" id="deskripsi" class="form-control">   
@@ -49,42 +49,38 @@
               </div>
 
             <div class="form-group">
-                <label for="role" class="col-sm-3 control-label">Gratis</label>
+                <label for="gratis" class="col-sm-3 control-label">Gratis</label>
 
                 <div class="col-sm-9">
-                  <select name="petugas" class="form-control">
+                  <select name="gratis" class="form-control">
                     <option value="">-- Pilih --</option>
-                    <option value="1">Ya</option>
-                    <option value="0">Tidak</option>
+                    <option value=1>Ya</option>
+                    <option value=0>Tidak</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Tanggal Mulai</label>
+                <label for="tglMulai" class="col-sm-3 control-label">Tanggal Mulai</label>
 
                 <div class="col-sm-9">
-                  <input type="text" name="tglMulai" id="tglMulai" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                  <input type="text" name="tglMulai" id="tglMulai" class="form-control" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="lastname" class="col-sm-3 control-label">Tanggal Selesai</label>
+                <label for="tglSelesai" class="col-sm-3 control-label">Tanggal Selesai</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="tglSelesai" id="tglSelesai" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                <input type="text" name="tglSelesai" id="tglSelesai" class="form-control" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="role" class="col-sm-3 control-label">Stasiun</label>
+                <label for="stasiun[]" class="col-sm-3 control-label">Stasiun</label>
 
                 <div class="col-sm-9">
-                  <select name="stasiun" class="form-control">
-                    <option value="">--Pilih Stasiun--</option>
-                    <option value="1">123123 - Stasiun Basdat Depok 1</option>
-                    <option value="0">321321 - Stasiun Basdat Depok 2</option>
-                  </select>
+                  <?= form_multiselect('stasiun[]', $stasiuns, '', 'class="form-control"'); ?>
                 </div>
               </div>
               

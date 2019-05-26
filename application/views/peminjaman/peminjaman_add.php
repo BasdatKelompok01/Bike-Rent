@@ -30,17 +30,13 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('peminjaman/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/peminjaman/add'), 'class="form-horizontal"');  ?> 
 
             <div class="form-group">
-                <label for="sepedastasiun" class="col-sm-3 control-label">Sepeda Stasiun</label>
+                <label for="sepeda" class="col-sm-3 control-label">Sepeda Stasiun</label>
 
                 <div class="col-sm-9">
-                  <select name="sepedastasiun" class="form-control">
-                    <option value="">-- Pilih --</option>
-                    <option value="1">11244 BMX - 123123 Stasiun Basdat Depok 1</option>
-                    <option value="0">11245 Fixie - 321321 Stasiun Basdat Depok 2</option>
-                  </select>
+                 <?= form_dropdown('sepeda[]', $sepedas, '', 'class="form-control"'); ?>  
                 </div>
               </div>
 

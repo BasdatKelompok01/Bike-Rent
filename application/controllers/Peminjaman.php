@@ -5,11 +5,12 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('peminjaman_model', 'peminjaman_model');
+			$this->load->model('sepeda_model', 'sepeda_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_peminjamans'] =  $this->peminjaman_model->get_all_peminjaman();
 			$data['view'] = 'peminjaman/peminjaman_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,87 +18,48 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('sepeda[]', 'Sepeda', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'peminjaman/peminjaman_add';
+					$data['sepedas'] = $this->sepeda_model->get_list_sepeda();
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'sepeda' => $this->input->post('sepeda'),
+						'datetime_pinjam' => date('Y-m-d : h:m:s'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
+					$result = $this->peminjaman_model->add_peminjaman($data);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('peminjaman'));
+						$this->session->set_flashdata('msg', 'Berhasil meminjam sepeda!');
+						redirect(base_url('index.php/peminjaman'));
 					}
 				}
 			}
 			else{
 				$data['view'] = 'peminjaman/peminjaman_add';
+				$data['sepedas'] = $this->sepeda_model->get_list_sepeda();
 				$this->load->view('layout', $data);
 			}
 			
 		}
 
-		public function edit($id = 0){
-			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
-
-				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
-					$data['view'] = 'peminjaman/peminjaman_edit';
-					$this->load->view('layout', $data);
-				}
-				else{
-					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
-					);
-					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
-					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('peminjaman'));
-					}
-				}
+		public function kembalikan($id1 = 0, $id2 = 0, $id3 = 0, $id4 = 0){
+			$data = array(
+				'no_kartu_anggota' => $id1,
+				'datetime_pinjam' => $id2,
+				'nomor_sepeda' => $id3,
+				'id_stasiun' => $id4,
+				'datetime_kembali' => date('Y-m-d H:i'),
+			);
+			$data = $this->security->xss_clean($data);
+			$result = $this->peminjaman_model->pengembalian($data);
+			if($result){
+				$this->session->set_flashdata('msg', 'Berhasil mengembalikan sepeda!');
+				redirect(base_url('index.php/peminjaman'));
 			}
-			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
-				$data['view'] = 'peminjaman/peminjaman_edit';
-				$this->load->view('layout', $data);
-			}
-		}
-
-		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('peminjaman'));
 		}
 
 	}

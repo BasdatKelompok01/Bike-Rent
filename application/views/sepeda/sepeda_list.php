@@ -8,9 +8,9 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
-      <!-- <a href="<?= base_url('sepeda/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Sepeda</span></a>
+      <!-- <a href="<?= base_url('index.php/sepeda/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Sepeda</span></a>
       <br>&nbsp; -->
-      <table id="example1" class="table table-bordered table-striped ">
+      <table id="tblSepeda" class="table table-bordered table-striped ">
         <thead>
         <tr>
           <th>No</th>
@@ -25,26 +25,40 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>13u78q</td>
-                <td>BMX</td>
-                <td>Dewasa</td>
-                <td>123123 - Stasiun Basdat Depok 1</td>
-                <td>Tersedia</td>
-                <td>-</td>
-                <?php if($this->session->userdata('role') == 'Admin') { ?>
-                <td align="center">
-                  <a href="<?= base_url('sepeda/edit/1'); ?>" class="btn btn-primary btn-sm">Update</a>
-                  <button class="btn btn-danger btn-sm konfirmasiHapus-pegawai" data-id="1" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
-                </td>
+            <?php $num=1; ?>
+            <?php foreach($all_sepedas as $row): ?>
+              <tr>
+                <td><?= $num; ?></td>
+                <td><?= $row['nomor']; ?></td>
+                <td><?= $row['merk']; ?></td>
+                <td><?= $row['jenis']; ?></td>
+                <td><?= $row['stasiun']; ?></td>
+                <td>
+                <?php 
+                    if($row['status'] == 't') { 
+                      echo 'Tersedia';
+                    } else { 
+                        echo 'Tidak Tersedia';
+                    }
+                ?>
+            </td>
+                <td><?= $row['penyumbang']; ?></td>
+                <?php if($this->session->userdata('role') == 'Admin') { ?> 
+                    <td align="center">
+                      <a href="<?= base_url('index.php/sepeda/edit/' . $row['nomor']); ?>" class="btn btn-primary btn-sm">Update</a>
+                      <button class="btn btn-danger btn-sm konfirmasiHapus-sepeda" data-id="<?php echo $row['nomor']; ?>" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
+                    </td>
                 <?php } ?>
-                <?php if($this->session->userdata('role') == 'Anggota') { ?>
-                <td align="center">
-                  <a href="<?= base_url('sepeda/pinjam/1'); ?>" class="btn btn-primary btn-sm">Pinjam</a>
-                </td>
+                <?php if($this->session->userdata('role') == 'Anggota') { ?> 
+                    <td align="center">
+                      <?php if ($row['status'] == 't') { ?>
+                      <a href="<?= base_url('index.php/sepeda/pinjam/' . $row['nomor']); ?>" class="btn btn-primary btn-sm">Pinjam</a>
+                      <?php } ?>
+                    </td>
                 <?php } ?>
-            </tr>
+              </tr>
+              <?php $num++; ?>
+              <?php endforeach; ?>
        </tbody>
        
       </table>
@@ -53,7 +67,7 @@
   </div>
   <!-- /.box -->
   <div id="tempat-modal"></div>
-  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataPegawai', 'Apakah benar ingin menghapus sepeda tersebut?', 'Ya'); ?>
+  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataSepeda', 'Apakah benar ingin menghapus sepeda tersebut?', 'Ya'); ?>
 </section>  
 
 <!-- DataTables -->
@@ -61,26 +75,23 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tblSepeda").DataTable();
   });
-  var id_pegawai;
-	$(document).on("click", ".konfirmasiHapus-pegawai", function() {
-		id_pegawai = $(this).attr("data-id");
+  var nomor;
+	$(document).on("click", ".konfirmasiHapus-sepeda", function() {
+		nomor = $(this).attr("data-id");
 	})
 
-	$(document).on("click", ".hapus-dataPegawai", function() {
-		var id = id_pegawai;
+	$(document).on("click", ".hapus-dataSepeda", function() {
+		var id = nomor;
 		
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url('Pegawai/delete'); ?>",
+			url: "<?php echo base_url('index.php/sepeda/del'); ?>",
 			data: "id=" +id
 		})
 		.done(function(data) {
-			$('#konfirmasiHapus').modal('hide');
-			tampilPegawai();
-			$('.msg').html(data);
-			effect_msg();
+      window.location.href="<?php echo site_url('sepeda'); ?>";
 		})
 	})
 </script> 

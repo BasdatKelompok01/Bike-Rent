@@ -5,11 +5,13 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('penugasan_model', 'penugasan_model');
+			$this->load->model('stasiun_model', 'stasiun_model');
+			$this->load->model('petugas_model', 'petugas_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_penugasan'] =  $this->penugasan_model->get_all_penugasan();
 			$data['view'] = 'penugasan/penugasan_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,87 +19,95 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('petugas[]', 'Petugas', 'trim|required');
+				$this->form_validation->set_rules('tglMulai', 'Waktu Mulai', 'trim|required');
+				$this->form_validation->set_rules('tglSelesai', 'Waktu Selesai', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'penugasan/penugasan_add';
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+					$data['petugass'] = $this->petugas_model->get_list_petugas();
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'petugas' => $this->input->post('petugas'),
+						'tglMulai' => date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai'))),
+						'tglSelesai' =>date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai'))),
+						'stasiun' => $this->input->post('stasiun'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
+					$result = $this->penugasan_model->add_penugasan($data);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('penugasan'));
+						$this->session->set_flashdata('msg', 'Data Penugasan Berhasil Ditambahkan!');
+						redirect(base_url('index.php/penugasan'));
 					}
 				}
 			}
 			else{
 				$data['view'] = 'penugasan/penugasan_add';
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+				$data['petugass'] = $this->petugas_model->get_list_petugas();
 				$this->load->view('layout', $data);
 			}
 			
 		}
 
-		public function edit($id = 0){
+		public function edit($id = 0, $id2 = 0, $id3 = 0){
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('petugas[]', 'Petugas', 'trim|required');
+				$this->form_validation->set_rules('tglMulai', 'Waktu Mulai', 'trim|required');
+				$this->form_validation->set_rules('tglSelesai', 'Waktu Selesai', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
+					$data['penugasan'] = $this->penugasan_model->get_penugasan_by_id($id, $id2, $id3);
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+					$data['petugass'] = $this->petugas_model->get_list_petugas();
+					$data['selectedstasiun'] = $this->penugasan_model->get_selected_stasiun($id, $id2, $id3);
+					$data['selectedpetugas'] = $this->penugasan_model->get_selected_petugas($id, $id2, $id3);
 					$data['view'] = 'penugasan/penugasan_edit';
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'petugas' => $this->input->post('petugas'),
+						'tglMulai' => date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai'))),
+						'tglSelesai' =>date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai'))),
+						'stasiun' => $this->input->post('stasiun'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
+					$result = $this->penugasan_model->edit_penugasan($data, $id, $id2, $id3);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('penugasan'));
+						$this->session->set_flashdata('msg', 'Penugasan Berhasil Diupdate!');
+						redirect(base_url('index.php/penugasan'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
+				$data['penugasan'] = $this->penugasan_model->get_penugasan_by_id($id, $id2, $id3);
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+				$data['petugass'] = $this->petugas_model->get_list_petugas();
+				$data['selectedstasiun'] = $this->penugasan_model->get_selected_stasiun($id, $id2, $id3);
+				$data['selectedpetugas'] = $this->penugasan_model->get_selected_petugas($id, $id2, $id3);
 				$data['view'] = 'penugasan/penugasan_edit';
 				$this->load->view('layout', $data);
 			}
 		}
 
-		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('penugasan'));
+		public function del(){
+			$id = $_POST['id'];
+			$arr = explode("#", $id);
+
+			$vktp = $arr[0];
+			$vstart = $arr[1];
+			$vstas = $arr[2];
+
+			$sql = 'DELETE FROM penugasan WHERE ktp = ? and start_datetime = ? and id_stasiun = ?';
+			$this->db->query($sql, array($vktp, $vstart, $vstas));
+			$this->session->set_flashdata('msg', 'Penugasan Berhasil Dihapus!');
+			redirect(base_url('index.php/penugasan'));
 		}
 
 	}

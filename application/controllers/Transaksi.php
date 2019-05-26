@@ -5,11 +5,11 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('transaksi_model', 'transaksi_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_transaksi'] =  $this->transaksi_model->get_all_transasi_by_ktp();
 			$data['view'] = 'transaksi/riwayat';
 			$this->load->view('layout', $data);
 		}

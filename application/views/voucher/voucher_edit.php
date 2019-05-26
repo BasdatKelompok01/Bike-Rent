@@ -17,13 +17,13 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('penugasan/edit/'.$user['id']), 'class="form-horizontal"' )?> 
+            <?php echo form_open(base_url('index.php/voucher/edit/'.$voucher['id_voucher']), 'class="form-horizontal"' )?> 
 
             <div class="form-group">
                 <label for="nama" class="col-sm-3 control-label">Nama</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="nama" id="nama" class="form-control" value="Voucher Belanja">
+                <input type="text" name="nama" id="nama" class="form-control" value="<?php echo $voucher['nama'];?>">
                 </div>
               </div>
 
@@ -31,7 +31,7 @@
                 <label for="kategori" class="col-sm-3 control-label">Kategori</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="kategori" id="kategori" class="form-control" value="Belanja">
+                <input type="text" name="kategori" id="kategori" class="form-control" value="<?php echo $voucher['kategori'];?>">
                 </div>
               </div>
 
@@ -39,7 +39,7 @@
                 <label for="poin" class="col-sm-3 control-label">Nilai Poin</label>
 
                 <div class="col-sm-9">
-                <input type="number" name="poin" id="poin" class="form-control" value="300">
+                <input type="number" name="poin" id="poin" class="form-control" value="<?php echo $voucher['nilai_poin'];?>">
                 </div>
               </div>
 
@@ -47,15 +47,15 @@
                 <label for="deskripsi" class="col-sm-3 control-label">Deskripsi</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="deskripsi" id="deskripsi" class="form-control" value="Gratis Belanja">
+                <input type="text" name="deskripsi" id="deskripsi" class="form-control" value="<?php echo $voucher['deskripsi'];?>">
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="col-md-11 text-center">
                 
-                <input type="submit" name="submit" value="Ubah" class="btn btn-primary">
-                <a href="<?= base_url('voucher'); ?>" class="btn btn-default">Batal</a>
+                <input type="submit" name="submit" value="Update" class="btn btn-primary">
+                <a href="<?= base_url('index.php/voucher'); ?>" class="btn btn-default">Batal</a>
                 </div>
               </div>
             <?php echo form_close(); ?>

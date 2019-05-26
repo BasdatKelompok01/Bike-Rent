@@ -54,7 +54,7 @@
 				<!--main content end-->
 				<!--footer start-->
 				<footer class="main-footer">
-					<strong>Copyright © 2019 <a href="#">Kelompok Berapa</a></strong> All rights
+					<strong>Copyright © 2019 <a href="#">Kelompok 1</a></strong> All rights
 					reserved.
 				</footer>
 				<!--footer end-->
@@ -72,6 +72,8 @@
 	<script src="<?= base_url() ?>public/dist/js/app.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="<?= base_url() ?>public/dist/js/demo.js"></script>
+	<!-- My Ajax -->
+	<!-- <?php include './application/helpers/ajax.php' ?> -->
 	<!-- page script -->
 	<script type="text/javascript">
 	  $(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){

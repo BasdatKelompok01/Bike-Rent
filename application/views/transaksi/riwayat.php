@@ -8,7 +8,7 @@
    </div>
    <!-- /.box-header -->
    <div class="box-body table-responsive">
-     <table id="example1" class="table table-bordered table-striped ">
+     <table id="tblTransaksi" class="table table-bordered table-striped ">
        <thead>
        <tr>
          <th>No</th>
@@ -18,18 +18,16 @@
        </tr>
        </thead>
        <tbody>
+        <?php $num=1; ?>
+          <?php foreach($all_transaksi as $row): ?>
             <tr>
-                <td>1</td>
-                <td>15 April 2019</td>
-                <td>Topup</td>
-                <td>20000</td>
+              <td><?= $num; ?></td>
+              <td><?= date('d F Y H:i', strtotime($row['date_time'])); ?></td>
+              <td><?= $row['jenis']; ?></td>
+              <td><?= $row['total']; ?></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>15 April 2019</td>
-                <td>Peminjaman</td>
-                <td>-10000</td>
-            </tr>
+            <?php $num++; ?>
+            <?php endforeach; ?>
        </tbody>
       
      </table>
@@ -44,7 +42,7 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
  $(function () {
-   $("#example1").DataTable();
+   $("#tblTransaksi").DataTable();
  });
 </script> 
 <script>

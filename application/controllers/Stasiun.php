@@ -5,11 +5,11 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('stasiun_model', 'stasiun_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_stasiuns'] =  $this->stasiun_model->get_all_stasiun();
 			$data['view'] = 'stasiun/stasiun_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,12 +17,10 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+				$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+				$this->form_validation->set_rules('latitude', 'latitude', 'trim|required');
+				$this->form_validation->set_rules('longitude', 'longitude', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'stasiun/stasiun_add';
@@ -30,21 +28,16 @@
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'nama' => $this->input->post('nama'),
+						'alamat' => $this->input->post('alamat'),
+						'lat' => $this->input->post('latitude'),
+						'long' => $this->input->post('longitude'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
+					$result = $this->stasiun_model->add_stasiun($data);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('stasiun'));
+						$this->session->set_flashdata('msg', 'Data Stasiun Berhasil Ditambahkan!');
+						redirect(base_url('index.php/stasiun'));
 					}
 				}
 			}
@@ -57,47 +50,44 @@
 
 		public function edit($id = 0){
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+				$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+				$this->form_validation->set_rules('latitude', 'latitude', 'trim|required');
+				$this->form_validation->set_rules('longitude', 'longitude', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
+					$data['stasiun'] = $this->stasiun_model->get_stasiun_by_id($id);
 					$data['view'] = 'stasiun/stasiun_edit';
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'nama' => $this->input->post('nama'),
+						'alamat' => $this->input->post('alamat'),
+						'lat' => $this->input->post('latitude'),
+						'long' => $this->input->post('longitude'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
+					$result = $this->stasiun_model->edit_stasiun($data, $id);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('stasiun'));
+						$this->session->set_flashdata('msg', 'Stasiun Berhasil Diupdate!');
+						redirect(base_url('index.php/stasiun'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
+				$data['stasiun'] = $this->stasiun_model->get_stasiun_by_id($id);
 				$data['view'] = 'stasiun/stasiun_edit';
 				$this->load->view('layout', $data);
 			}
 		}
 
-		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('stasiun'));
+		public function del(){
+			$id = $_POST['id'];
+			$sql = 'DELETE FROM stasiun WHERE id_stasiun = ?';
+			$this->db->query($sql, array($id));
+			$this->session->set_flashdata('msg', 'Stasiun Berhasil Dihapus!');
+			redirect(base_url('index.php/stasiun'));
 		}
 
 	}

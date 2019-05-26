@@ -30,7 +30,7 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('voucher/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/voucher/add'), 'class="form-horizontal"');  ?> 
 
               <div class="form-group">
                 <label for="nama" class="col-sm-3 control-label">Nama</label>

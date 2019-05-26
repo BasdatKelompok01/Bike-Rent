@@ -5,11 +5,14 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('sepeda_model', 'sepeda_model');
+			$this->load->model('stasiun_model', 'stasiun_model');
+			$this->load->model('anggota_model', 'anggota_model');
+			$this->load->model('peminjaman_model', 'peminjaman_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_sepedas'] =  $this->sepeda_model->get_all_sepeda();
 			$data['view'] = 'sepeda/sepeda_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,39 +20,38 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('merk', 'Merk', 'trim|required');
+				$this->form_validation->set_rules('jenis', 'Jenis', 'trim|required');
+				$this->form_validation->set_rules('status', 'Status', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
+				$this->form_validation->set_rules('penyumbang[]', 'Penyumbang', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'sepeda/sepeda_add';
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+					$data['penyumbangs'] = $this->anggota_model->get_list_anggota();
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'merk' => $this->input->post('merk'),
+						'jenis' => $this->input->post('jenis'),
+						'status' => $this->input->post('status'),
+						'stasiun' => $this->input->post('stasiun'),
+						'penyumbang' => $this->input->post('penyumbang'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
+					$result = $this->sepeda_model->add_sepeda($data);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('sepeda'));
+						$this->session->set_flashdata('msg', 'Data Sepeda Berhasil Ditambahkan!');
+						redirect(base_url('index.php/sepeda'));
 					}
 				}
 			}
 			else{
 				$data['view'] = 'sepeda/sepeda_add';
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+				$data['penyumbangs'] = $this->anggota_model->get_list_anggota();
 				$this->load->view('layout', $data);
 			}
 			
@@ -57,50 +59,67 @@
 
 		public function edit($id = 0){
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('merk', 'Merk', 'trim|required');
+				$this->form_validation->set_rules('jenis', 'Jenis', 'trim|required');
+				$this->form_validation->set_rules('status', 'Status', 'trim|required');
+				$this->form_validation->set_rules('stasiun[]', 'Stasiun', 'trim|required');
+				$this->form_validation->set_rules('penyumbang[]', 'Penyumbang', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
+					$data['sepeda'] = $this->sepeda_model->get_sepeda_by_id($id);
+					$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+					$data['penyumbangs'] = $this->anggota_model->get_list_anggota();
+					$data['selectedstasiun'] = $this->sepeda_model->get_selected_stasiun($id);
+					$data['selectedanggota'] = $this->sepeda_model->get_selected_anggota($id);
 					$data['view'] = 'sepeda/sepeda_edit';
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'merk' => $this->input->post('merk'),
+						'jenis' => $this->input->post('jenis'),
+						'status' => $this->input->post('status'),
+						'stasiun' => $this->input->post('stasiun'),
+						'penyumbang' => $this->input->post('penyumbang'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
+					$result = $this->sepeda_model->edit_sepeda($data, $id);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('sepeda'));
+						$this->session->set_flashdata('msg', 'Sepeda Berhasil Diupdate!');
+						redirect(base_url('index.php/sepeda'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
+				$data['sepeda'] = $this->sepeda_model->get_sepeda_by_id($id);
+				$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+				$data['penyumbangs'] = $this->anggota_model->get_list_anggota();
+				$data['selectedstasiun'] = $this->sepeda_model->get_selected_stasiun($id);
+				$data['selectedanggota'] = $this->sepeda_model->get_selected_anggota($id);
 				$data['view'] = 'sepeda/sepeda_edit';
 				$this->load->view('layout', $data);
 			}
 		}
 
 		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('sepeda'));
+			$id = $_POST['id'];
+			$sql = 'DELETE FROM sepeda WHERE nomor = ?';
+			$this->db->query($sql, array($id));
+			$this->session->set_flashdata('msg', 'Sepeda Berhasil Dihapus!');
+			redirect(base_url('index.php/sepeda'));
 		}
 
+		public function pinjam($id = 0){
+			$data = array(
+				'sepeda' => $id,
+				'datetime_pinjam' => date('Y-m-d : h:m:s'),
+			);
+			$data = $this->security->xss_clean($data);
+			$result = $this->peminjaman_model->add_peminjaman($data);
+			if($result){
+				$this->session->set_flashdata('msg', 'Berhasil melakukan peminjaman!');
+				redirect(base_url('index.php/peminjaman'));
+			}
+		}
 	}
-
-
 ?>

@@ -20,8 +20,10 @@
             
             <div class="col-md-4 col-md-offset-4 text-center">
                 <div class="login-title">
-                    <h3><span>BikeRent</span></h3>
+                <img src="<?= base_url() ?>public/dist/img/logo.png" alt="BikeRent" width=300>
+                    <!-- <h3><span>BikeRent</span></h3> -->
                 </div>
+                <br>
                 <?php if(isset($msg) || validation_errors() !== ''): ?>
                 <div class="alert alert-warning alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -34,9 +36,9 @@
                     <div class="caption">
                         <h4>Login untuk memulai sesi</h4>
                     </div>
-                    <?php echo form_open(base_url('auth/login'), 'class="login-form" '); ?>
+                    <?php echo form_open(base_url('index.php/auth/login'), 'class="login-form" '); ?>
                         <div class="input-group">
-                            <input type="number" name="nomorKTP" id="nomorKTP" class="form-control" placeholder="Nomor KTP" >
+                            <input type="number" name="nomorKTP" id="nomorKTP" MaxLength="16" class="form-control" placeholder="Nomor KTP" >
                             <input type="email" name="email" id="email" class="form-control" placeholder="Email" >&nbsp;
                             <!-- <input type="password" name="password" id="password" class="form-control" placeholder="Password" > -->
                             <input type="submit" name="submit" id="submit" class="form-control" value="Login">
@@ -44,7 +46,7 @@
                     <?php echo form_close(); ?>
                     <br>
                     <div class="form inline">
-                    Belum mempunyai akun ? <a href="<?php echo base_url() ?>auth/register">REGISTER</a>
+                    Belum mempunyai akun ? <a href="<?php echo base_url() ?>index.php/auth/register">REGISTER</a>
                     </div>
                 </div>
             </div>

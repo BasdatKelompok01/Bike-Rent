@@ -48,9 +48,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center">
-                <div class="login-title">
-                    <h3><span>BikeRent</span></h3>
+            <div class="login-title">
+                <img src="<?= base_url() ?>public/dist/img/logo.png" alt="BikeRent" width=300>
+                    <!-- <h3><span>BikeRent</span></h3> -->
                 </div>
+                <br>
                 <?php if(isset($msg) || validation_errors() !== ''): ?>
                 <div class="alert alert-warning alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -63,7 +65,7 @@
                     <div class="caption">
                         <h4>FORM PENDAFTARAN PENGGUNA</h4>
                     </div>
-                    <?php echo form_open(base_url('auth/register'), 'class="login-form" '); ?>                    
+                    <?php echo form_open(base_url('index.php/auth/register'), 'class="login-form" '); ?>                    
                         <div class="input-group">
                             <select name="role" id="role" class="form-control" placeholder="Role">
                                 <option value="">-- Pilih Role --</option>
@@ -81,7 +83,7 @@
                     <?php echo form_close(); ?>
                     <br>
                     <div class="form inline">
-                    Sudah mempunyai akun ? <a href="<?php echo base_url() ?>/auth/login">LOGIN</a>
+                    Sudah mempunyai akun ? <a href="<?php echo base_url() ?>index.php/auth/login">LOGIN</a>
                     </div>
                 </div>
             </div>

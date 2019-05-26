@@ -9,10 +9,10 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="<?= base_url() ?>public/dist/img/avatar5.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?= ucwords($this->session->userdata('name')); ?></p>
+          Selamat Datang, <br><br><p><?= ucwords($this->session->userdata('name')); ?></p>
         </div>
       </div>
       <!-- search form -->
@@ -25,13 +25,6 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
         </div>
       </form>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <!-- <ul class="sidebar-menu">
-        <li id="dashboard">
-        <a href="<?= base_url('dashboard'); ?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
-        </li>
-      </ul> -->
 
       <ul class="sidebar-menu">
         <?php if($this->session->userdata('role') == 'Admin') { ?>
@@ -44,8 +37,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addAcara"><a href="<?= base_url('acara/add'); ?>"><i class="fa fa-plus"></i> Tambah Acara</a></li>
-              <li id="listAcara"><a href="<?= base_url('acara'); ?>"><i class="fa fa-list"></i> Daftar Acara</a></li>
+              <li id="addAcara"><a href="<?= base_url('index.php/acara/add'); ?>"><i class="fa fa-plus"></i> Tambah Acara</a></li>
+              <li id="listAcara"><a href="<?= base_url('index.php/acara'); ?>"><i class="fa fa-list"></i> Daftar Acara</a></li>
             </ul>
           </li>
           <li id="penugasan" class="treeview">
@@ -57,8 +50,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addPenugasan"><a href="<?= base_url('penugasan/add'); ?>"><i class="fa fa-plus"></i> Tambah Penugasan</a></li>
-              <li id="listPenugasan"><a href="<?= base_url('penugasan'); ?>"><i class="fa fa-list"></i> Daftar Penugasan</a></li>
+              <li id="addPenugasan"><a href="<?= base_url('index.php/penugasan/add'); ?>"><i class="fa fa-plus"></i> Tambah Penugasan</a></li>
+              <li id="listPenugasan"><a href="<?= base_url('index.php/penugasan'); ?>"><i class="fa fa-list"></i> Daftar Penugasan</a></li>
             </ul>
           </li>
           <li id="stasiun" class="treeview">
@@ -70,8 +63,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addStasiun"><a href="<?= base_url('stasiun/add'); ?>"><i class="fa fa-plus"></i> Tambah Stasiun</a></li>
-              <li id="listStasiun"><a href="<?= base_url('stasiun'); ?>"><i class="fa fa-list"></i> Daftar Stasiun</a></li>
+              <li id="addStasiun"><a href="<?= base_url('index.php/stasiun/add'); ?>"><i class="fa fa-plus"></i> Tambah Stasiun</a></li>
+              <li id="listStasiun"><a href="<?= base_url('index.php/stasiun'); ?>"><i class="fa fa-list"></i> Daftar Stasiun</a></li>
             </ul>
           </li>
           <li id="sepeda" class="treeview">
@@ -83,8 +76,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addSepeda"><a href="<?= base_url('sepeda/add'); ?>"><i class="fa fa-plus"></i> Tambah Sepeda</a></li>
-              <li id="listSepeda"><a href="<?= base_url('sepeda'); ?>"><i class="fa fa-list"></i> Daftar Sepeda</a></li>
+              <li id="addSepeda"><a href="<?= base_url('index.php/sepeda/add'); ?>"><i class="fa fa-plus"></i> Tambah Sepeda</a></li>
+              <li id="listSepeda"><a href="<?= base_url('index.php/sepeda'); ?>"><i class="fa fa-list"></i> Daftar Sepeda</a></li>
             </ul>
           </li>
           <li id="voucher" class="treeview">
@@ -96,27 +89,27 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addVoucher"><a href="<?= base_url('voucher/add'); ?>"><i class="fa fa-plus"></i> Tambah Voucher</a></li>
-              <li id="listVoucher"><a href="<?= base_url('voucher'); ?>"><i class="fa fa-list"></i> Daftar Voucher</a></li>
+              <li id="addVoucher"><a href="<?= base_url('index.php/voucher/add'); ?>"><i class="fa fa-plus"></i> Tambah Voucher</a></li>
+              <li id="listVoucher"><a href="<?= base_url('index.php/voucher'); ?>"><i class="fa fa-list"></i> Daftar Voucher</a></li>
             </ul>
           </li>
           <li id="listPeminjaman">
-            <a href="<?= base_url('peminjaman'); ?>"><i class="fa fa-hand-rock-o"></i> <span>Daftar Peminjaman</span></a>
+            <a href="<?= base_url('index.php/peminjaman'); ?>"><i class="fa fa-hand-rock-o"></i> <span>Daftar Peminjaman</span></a>
           </li>
           <li id="listLaporan">
-            <a href="<?= base_url('laporan'); ?>"><i class="fa fa-file"></i> <span>Daftar Laporan</span></a>
+            <a href="<?= base_url('index.php/laporan'); ?>"><i class="fa fa-file"></i> <span>Daftar Laporan</span></a>
           </li>
           <li>
-            <a href="<?= base_url('auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
+            <a href="<?= base_url('index.php/auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
           </li>
         <?php } ?>
 
         <?php if($this->session->userdata('role') == 'Anggota') { ?>
           <li id="listStasiun">
-            <a href="<?= base_url('stasiun'); ?>"><i class="fa fa-building"></i> <span>Daftar Stasiun</span></a>
+            <a href="<?= base_url('index.php/stasiun'); ?>"><i class="fa fa-building"></i> <span>Daftar Stasiun</span></a>
           </li>
           <li id="listSepeda">
-            <a href="<?= base_url('sepeda'); ?>"><i class="fa fa-bicycle"></i> <span>Daftar Sepeda</span></a>
+            <a href="<?= base_url('index.php/sepeda'); ?>"><i class="fa fa-bicycle"></i> <span>Daftar Sepeda</span></a>
           </li>
           <li id="peminjaman" class="treeview">
             <a href="#">
@@ -127,8 +120,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="addPeminjaman"><a href="<?= base_url('peminjaman/add'); ?>"><i class="fa fa-plus"></i> Tambah Peminjaman</a></li>
-              <li id="listPeminjaman"><a href="<?= base_url('peminjaman'); ?>"><i class="fa fa-list"></i> Daftar Peminjaman</a></li>
+              <li id="addPeminjaman"><a href="<?= base_url('index.php/peminjaman/add'); ?>"><i class="fa fa-plus"></i> Tambah Peminjaman</a></li>
+              <li id="listPeminjaman"><a href="<?= base_url('index.php/peminjaman'); ?>"><i class="fa fa-list"></i> Daftar Peminjaman</a></li>
             </ul>
           </li>
           <li id="transaksi" class="treeview">
@@ -140,45 +133,45 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="topup"><a href="<?= base_url('topup'); ?>"><i class="fa fa-plus"></i> Top Up ShareBike Pay</a></li>
-              <li id="riwayatTransaksi"><a href="<?= base_url('transaksi'); ?>"><i class="fa fa-list"></i> Riwayat Transaksi</a></li>
+              <li id="topup"><a href="<?= base_url('index.php/topup'); ?>"><i class="fa fa-plus"></i> Top Up ShareBike Pay</a></li>
+              <li id="riwayatTransaksi"><a href="<?= base_url('index.php/transaksi'); ?>"><i class="fa fa-list"></i> Riwayat Transaksi</a></li>
             </ul>
           </li>
           <li id="listAcara">
-            <a href="<?= base_url('acara'); ?>"><i class="fa fa-calendar"></i> <span> Daftar Acara</span></a>
+            <a href="<?= base_url('index.php/acara'); ?>"><i class="fa fa-calendar"></i> <span> Daftar Acara</span></a>
           </li>
           <li id="listVoucher">
-            <a href="<?= base_url('voucher'); ?>"><i class="fa fa-ticket"></i> <span> Daftar Voucher</span></a>
+            <a href="<?= base_url('index.php/voucher'); ?>"><i class="fa fa-ticket"></i> <span> Daftar Voucher</span></a>
           </li>
           <li>
-            <a href="<?= base_url('auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
+            <a href="<?= base_url('index.php/auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
           </li>
         <?php } ?>
         
         <?php if($this->session->userdata('role') == 'Petugas') { ?>
           <li id="listPenugasan">
-            <a href="<?= base_url('penugasan'); ?>"><i class="fa fa-user-secret"></i> <span>Daftar Penugasan</span></a>
+            <a href="<?= base_url('index.php/penugasan'); ?>"><i class="fa fa-user-secret"></i> <span>Daftar Penugasan</span></a>
           </li>
           <li id="listStasiun">
-            <a href="<?= base_url('stasiun'); ?>"><i class="fa fa-building"></i> <span>Daftar Stasiun</span></a>
+            <a href="<?= base_url('index.php/stasiun'); ?>"><i class="fa fa-building"></i> <span>Daftar Stasiun</span></a>
           </li>
           <li id="listSepeda">
-            <a href="<?= base_url('sepeda'); ?>"><i class="fa fa-bicycle"></i> <span>Daftar Sepeda</span></a>
+            <a href="<?= base_url('index.php/sepeda'); ?>"><i class="fa fa-bicycle"></i> <span>Daftar Sepeda</span></a>
           </li>
           <li id="listAcara">
-            <a href="<?= base_url('acara'); ?>"><i class="fa fa-calendar"></i> <span>Daftar Acara</span></a>
+            <a href="<?= base_url('index.php/acara'); ?>"><i class="fa fa-calendar"></i> <span>Daftar Acara</span></a>
           </li>
           <li id="listLaporan">
-            <a href="<?= base_url('laporan'); ?>"><i class="fa fa-file"></i> <span>Daftar Laporan</span></a>
+            <a href="<?= base_url('index.php/laporan'); ?>"><i class="fa fa-file"></i> <span>Daftar Laporan</span></a>
           </li>
           <li id="listPeminjaman">
-            <a href="<?= base_url('peminjaman'); ?>"><i class="fa fa-hand-rock-o"></i> <span>Daftar Peminjaman</span></a>
+            <a href="<?= base_url('index.php/peminjaman'); ?>"><i class="fa fa-hand-rock-o"></i> <span>Daftar Peminjaman</span></a>
           </li>
           <li id="listVoucher">
-            <a href="<?= base_url('voucher'); ?>"><i class="fa fa-ticket"></i> <span>Daftar Voucher</span></a>
+            <a href="<?= base_url('index.php/voucher'); ?>"><i class="fa fa-ticket"></i> <span>Daftar Voucher</span></a>
           </li>
           <li>
-            <a href="<?= base_url('auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
+            <a href="<?= base_url('index.php/auth/logout'); ?>"><i class="fa fa-power-off"></i> <span>Logout</span></a>
           </li>
         <?php } ?>
 

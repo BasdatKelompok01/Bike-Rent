@@ -5,11 +5,11 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('voucher_model', 'voucher_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_vouchers'] =  $this->voucher_model->get_all_voucher();
 			$data['view'] = 'voucher/voucher_list';
 			$this->load->view('layout', $data);
 		}
@@ -17,12 +17,11 @@
 		public function add(){
 			if($this->input->post('submit')){
 
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+				$this->form_validation->set_rules('kategori', 'Kategori', 'trim|required');
+				$this->form_validation->set_rules('poin', 'Poin', 'trim|required');
+				$this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+				$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
 					$data['view'] = 'voucher/voucher_add';
@@ -30,21 +29,21 @@
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'created_at' => date('Y-m-d : h:m:s'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'nama' => $this->input->post('nama'),
+						'kategori' => $this->input->post('kategori'),
+						'nilai_poin' => $this->input->post('poin'),
+						'deskripsi' => $this->input->post('deskripsi'),
+						'jumlah' => $this->input->post('jumlah'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->add_user($data);
+
+					for ($i=0; $i<$data['jumlah']; $i++){
+						$result = $this->voucher_model->add_voucher($data);
+					}
+
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Added Successfully!');
-						redirect(base_url('voucher'));
+						$this->session->set_flashdata('msg', 'Data Voucher Berhasil Ditambahkan!');
+						redirect(base_url('index.php/voucher'));
 					}
 				}
 			}
@@ -57,50 +56,57 @@
 
 		public function edit($id = 0){
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
+				$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+				$this->form_validation->set_rules('kategori', 'Kategori', 'trim|required');
+				$this->form_validation->set_rules('poin', 'Poin', 'trim|required');
+				$this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
 
 				if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
+					$data['voucher'] = $this->voucher_model->get_voucher_by_id($id);
 					$data['view'] = 'voucher/voucher_edit';
 					$this->load->view('layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('firstname').' '.$this->input->post('lastname'),
-						'firstname' => $this->input->post('firstname'),
-						'lastname' => $this->input->post('lastname'),
-						'email' => $this->input->post('email'),
-						'mobile_no' => $this->input->post('mobile_no'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'nama' => $this->input->post('nama'),
+						'kategori' => $this->input->post('kategori'),
+						'nilai_poin' => $this->input->post('poin'),
+						'deskripsi' => $this->input->post('deskripsi'),
 					);
 					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
+					$result = $this->voucher_model->edit_voucher($data, $id);
 					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('voucher'));
+						$this->session->set_flashdata('msg', 'Voucher Berhasil Diupdate!');
+						redirect(base_url('index.php/voucher'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
+				$data['voucher'] = $this->voucher_model->get_voucher_by_id($id);
 				$data['view'] = 'voucher/voucher_edit';
 				$this->load->view('layout', $data);
 			}
 		}
 
 		public function del($id = 0){
-			$this->db->delete('ci_users', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('voucher'));
+			$id = $_POST['id'];
+			$sql = 'DELETE FROM voucher WHERE id_voucher = ?';
+			$this->db->query($sql, array($id));
+			$this->session->set_flashdata('msg', 'Voucher Berhasil Dihapus!');
+			redirect(base_url('index.php/voucher'));
 		}
 
+		public function klaim($id = 0, $ktp = ''){
+			$ktp = $this->session->userdata('ktp');
+			$sql1 = 'SELECT no_kartu FROM anggota a, person b WHERE a.ktp = b.ktp AND a.ktp = ?';
+			$query1 = $this->db->query($sql1, array($ktp));
+			$result1 = $query1->row_array();
+			$nokartu = $result1['no_kartu'];
+			
+			$sql = 'UPDATE voucher set no_kartu_anggota = ? WHERE id_voucher = ?';
+			$this->db->query($sql, array($nokartu, $id));
+			$this->session->set_flashdata('msg', 'Voucher Berhasil Diklaim!');
+			redirect(base_url('index.php/voucher'));
+		}
 	}
-
-
 ?>

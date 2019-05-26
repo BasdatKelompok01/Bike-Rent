@@ -8,31 +8,37 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
-      <!-- <a href="<?= base_url('penugasan/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Penugasan</span></a>
+      <!-- <a href="<?= base_url('index.php/penugasan/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Penugasan</span></a>
       <br>&nbsp; -->
-      <table id="example1" class="table table-bordered table-striped ">
+      <table id="tblPenugasan" class="table table-bordered table-striped ">
         <thead>
         <tr>
           <th>No</th>
           <th>Petugas</th>
-          <th>Tanggal Mulai</th>
-          <th>Tanggal Selesai</th>
+          <th>Waktu Mulai</th>
+          <th>Waktu Selesai</th>
           <th>Stasiun</th>
-          <th>Aksi</th>
+          <?php if($this->session->userdata('role') == 'Admin') { ?> <th>Aksi</th> <?php } ?>
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>111111 - Toni</td>
-                <td>15 April 2019 08:00</td>
-                <td>15 April 2019 16:00</td>
-                <td>123123 - Stasiun Basdat Depok 1</td>
-                <td align="center">
-                  <a href="<?= base_url('penugasan/edit/1'); ?>" class="btn btn-primary btn-sm">Update</a>
-                  <button class="btn btn-danger btn-sm konfirmasiHapus-pegawai" data-id="1" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
-                </td>
-            </tr>
+              <?php $num=1; ?>
+              <?php foreach($all_penugasan as $row): ?>
+                <tr>
+                  <td><?= $num; ?></td>
+                  <td><?= $row['ktp'] . ' - ' . $row['namapetugas']; ?></td>
+                  <td><?= date('d F Y H:i', strtotime($row['start_datetime'])); ?></td>
+                  <td><?= date('d F Y H:i', strtotime($row['end_datetime'])); ?></td>
+                  <td><?= $row['id_stasiun'] . ' - ' . $row['namastasiun']; ?></td>
+                  <?php if($this->session->userdata('role') == 'Admin') { ?> 
+                      <td align="center">
+                        <a href="<?= base_url('index.php/penugasan/edit/' . $row['ktp'] . '/' . $row['start_datetime'] . '/' . $row['id_stasiun']); ?>" class="btn btn-primary btn-sm">Update</a>
+                        <button class="btn btn-danger btn-sm konfirmasiHapus-penugasan" data-id="<?php echo $row['ktp'] . '#' . $row['start_datetime'] . '#' . $row['id_stasiun']; ?>" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
+                      </td>
+                  <?php } ?>
+                </tr>
+                <?php $num++; ?>
+                <?php endforeach; ?>
        </tbody>
        
       </table>
@@ -41,7 +47,7 @@
   </div>
   <!-- /.box -->
   <div id="tempat-modal"></div>
-  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataPegawai', 'Apakah benar ingin menghapus penugasan tersebut?', 'Ya'); ?>
+  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataPenugasan', 'Apakah benar ingin menghapus penugasan tersebut?', 'Ya'); ?>
 </section>  
 
 <!-- DataTables -->
@@ -49,26 +55,23 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tblPenugasan").DataTable();
   });
-  var id_pegawai;
-	$(document).on("click", ".konfirmasiHapus-pegawai", function() {
-		id_pegawai = $(this).attr("data-id");
+  var idx;
+	$(document).on("click", ".konfirmasiHapus-penugasan", function() {
+		idx = $(this).attr("data-id");
 	})
 
-	$(document).on("click", ".hapus-dataPegawai", function() {
-		var id = id_pegawai;
+	$(document).on("click", ".hapus-dataPenugasan", function() {
+		var id = idx;
 		
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url('Pegawai/delete'); ?>",
+			url: "<?php echo base_url('index.php/penugasan/del'); ?>",
 			data: "id=" +id
 		})
 		.done(function(data) {
-			$('#konfirmasiHapus').modal('hide');
-			tampilPegawai();
-			$('.msg').html(data);
-			effect_msg();
+      window.location.href="<?php echo site_url('penugasan'); ?>";
 		})
 	})
 </script> 

@@ -1,5 +1,5 @@
 <?php
-function show_my_confirm($id='', $class='', $title='Konfirmasi', $yes = 'Ya', $no = 'Batal') {
+function show_my_confirm($id='', $class='', $title='Konfirmasi', $yes = 'Ya', $no = 'Tidak') {
 		$_ci = &get_instance();
 
 		if ($id != '') {

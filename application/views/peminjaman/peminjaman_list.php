@@ -8,7 +8,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
-    <table id="example1" class="table table-bordered table-striped ">
+    <table id="tblPeminjaman" class="table table-bordered table-striped ">
         <thead>
         <tr>
           <th>No</th>
@@ -23,21 +23,27 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>13u78q</td>
-                <td>11244 - BMX</td>
-                <td>123123 - Stasiun Basdat Depok 1</td>
-                <td>15 April 2019</td>
-                <td>15 April 2019</td>
-                <td>-</td>
-                <td>-</td>
-                <?php if($this->session->userdata('role') == 'Anggota') { ?>
-                <td align="center">
-                  <a href="<?= base_url('peminjaman/kembalikan/1'); ?>" class="btn btn-primary btn-sm">Kembalikan</a>
-                </td>
-                <?php } ?>
-            </tr>
+            <?php $num=1; ?>
+                <?php foreach($all_peminjamans as $row): ?>
+                  <tr>
+                    <td><?= $num; ?></td>
+                    <td><?= $row['no_kartu_anggota']; ?></td>
+                    <td><?= $row['nomor'] . ' - ' . $row['merk']; ?></td>
+                    <td><?= $row['id_stasiun'] . ' - ' . $row['nama']; ?></td>
+                    <td><?= date('d F Y H:i', strtotime($row['datetime_pinjam'])); ?></td>
+                    <td><?= ($row['datetime_kembali'] == null ? '-' : date('d F Y H:i', strtotime($row['datetime_kembali']))); ?></td>
+                    <td><?= ($row['biaya'] == null ? '-' : $row['biaya']); ?></td>
+                    <td><?= ($row['denda'] == null ? '-' : $row['denda']); ?></td>
+                    <?php if($this->session->userdata('role') == 'Anggota') { ?> 
+                        <td align="center">
+                          <?php if ($row['datetime_kembali'] == null) { ?>
+                          <a href="<?= base_url('index.php/peminjaman/kembalikan/' . $row['no_kartu_anggota'] . '/' . $row['datetime_pinjam'] . '/' . $row['nomor'] . '/' . $row['id_stasiun']); ?>" class="btn btn-primary btn-sm">Kembalikan</a>
+                          <?php } ?>
+                        </td>
+                    <?php } ?>
+                  </tr>
+                  <?php $num++; ?>
+              <?php endforeach; ?>
        </tbody>
       </table>
     </div>
@@ -53,7 +59,7 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tblPeminjaman").DataTable();
   });
   var id_pegawai;
 	$(document).on("click", ".konfirmasiHapus-pegawai", function() {
@@ -65,7 +71,7 @@
 		
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url('Pegawai/delete'); ?>",
+			url: "<?php echo base_url('index.php/Pegawai/delete'); ?>",
 			data: "id=" +id
 		})
 		.done(function(data) {

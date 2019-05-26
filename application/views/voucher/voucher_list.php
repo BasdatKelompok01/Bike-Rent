@@ -8,9 +8,9 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
-      <!-- <a href="<?= base_url('voucher/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Voucher</span></a>
+      <!-- <a href="<?= base_url('index.php/voucher/add'); ?>" class="btn btn-primary"><span class="fa fa-plus"> Tambah Voucher</span></a>
       <br>&nbsp; -->
-      <table id="example1" class="table table-bordered table-striped ">
+      <table id="tblVoucher" class="table table-bordered table-striped ">
         <thead>
         <tr>
           <th>No</th>
@@ -25,45 +25,34 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>1111q</td>
-                <td>Voucher Belanja</td>
-                <td>Belanja</td>
-                <td>300</td>
-                <td>Gratis Belanja</td>
-                <td>-</td>
-                <?php if($this->session->userdata('role') == 'Admin') { ?>
-                <td align="center">
-                  <a href="<?= base_url('voucher/edit/1'); ?>" class="btn btn-primary btn-sm">Update</a>
-                  <button class="btn btn-danger btn-sm konfirmasiHapus-pegawai" data-id="1" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
-                </td>
+        <?php $num=1; ?>
+            <?php foreach($all_vouchers as $row): ?>
+              <tr>
+                <td><?= $num; ?></td>
+                <td><?= $row['id_voucher']; ?></td>
+                <td><?= $row['nama']; ?></td>
+                <td><?= $row['kategori']; ?></td>
+                <td><?= $row['nilai_poin']; ?></td>
+                <td><?= $row['deskripsi']; ?></td>
+                <td><?= ($row['diklaim'] == null) ? '-' : $row['diklaim']; ?></td>
+                <?php if($this->session->userdata('role') == 'Admin') { ?> 
+                    <td align="center">
+                      <?php if($row['diklaim'] == null) { ?> 
+                        <a href="<?= base_url('index.php/voucher/edit/' . $row['id_voucher']); ?>" class="btn btn-primary btn-sm">Update</a>
+                        <button class="btn btn-danger btn-sm konfirmasiHapus-voucher" data-id="<?php echo $row['id_voucher']; ?>" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
+                      <?php } ?>
+                    </td>
                 <?php } ?>
-                <?php if($this->session->userdata('role') == 'Anggota') { ?>
-                <td align="center">
-                  <a href="<?= base_url('voucher/klaim/1'); ?>" class="btn btn-primary btn-sm">Klaim</a>
-                </td>
+                <?php if($this->session->userdata('role') == 'Anggota') { ?> 
+                    <td align="center">
+                      <?php if($row['diklaim'] == null) { ?> 
+                        <a href="<?= base_url('index.php/voucher/klaim/' . $row['id_voucher']); ?>" class="btn btn-primary btn-sm">Klaim</a>
+                      <?php } ?>
+                    </td>
                 <?php } ?>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>95675</td>
-                <td>Voucher Makan</td>
-                <td>Makan</td>
-                <td>100</td>
-                <td>Makan Gratis</td>
-                <td>1w44 - Nunung</td>
-                <?php if($this->session->userdata('role') == 'Admin') { ?>
-                <td align="center">
-                  
-                </td>
-                <?php } ?>
-                <?php if($this->session->userdata('role') == 'Anggota') { ?>
-                <td align="center">
-                  
-                </td>
-                <?php } ?>
-            </tr>
+              </tr>
+              <?php $num++; ?>
+              <?php endforeach; ?>
        </tbody>
        
       </table>
@@ -72,7 +61,7 @@
   </div>
   <!-- /.box -->
   <div id="tempat-modal"></div>
-  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataPegawai', 'Apakah benar ingin menghapus voucher tersebut?', 'Ya'); ?>
+  <?php show_my_confirm('konfirmasiHapus', 'hapus-dataVoucher', 'Apakah benar ingin menghapus voucher tersebut?', 'Ya'); ?>
 </section>  
 
 <!-- DataTables -->
@@ -80,26 +69,23 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#tblVoucher").DataTable();
   });
-  var id_pegawai;
-	$(document).on("click", ".konfirmasiHapus-pegawai", function() {
-		id_pegawai = $(this).attr("data-id");
+  var id_voucher;
+	$(document).on("click", ".konfirmasiHapus-voucher", function() {
+		id_voucher = $(this).attr("data-id");
 	})
 
-	$(document).on("click", ".hapus-dataPegawai", function() {
-		var id = id_pegawai;
+	$(document).on("click", ".hapus-dataVoucher", function() {
+		var id = id_voucher;
 		
 		$.ajax({
 			method: "POST",
-			url: "<?php echo base_url('Pegawai/delete'); ?>",
+			url: "<?php echo base_url('index.php/voucher/del'); ?>",
 			data: "id=" +id
 		})
 		.done(function(data) {
-			$('#konfirmasiHapus').modal('hide');
-			tampilPegawai();
-			$('.msg').html(data);
-			effect_msg();
+      window.location.href="<?php echo site_url('voucher'); ?>";
 		})
 	})
 </script> 

@@ -30,7 +30,7 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('sepeda/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/sepeda/add'), 'class="form-horizontal"');  ?> 
 
 
               <div class="form-group">
@@ -65,11 +65,7 @@
                 <label for="stasiun" class="col-sm-3 control-label">Stasiun</label>
 
                 <div class="col-sm-9">
-                  <select name="stasiun" class="form-control">
-                    <option value="">-- Pilih Stasiun --</option>
-                    <option value="1">123123 - Stasiun Basdat Depok 1</option>
-                    <option value="0">321321 - Stasiun Basdat Depok 2</option>
-                  </select>
+                    <?= form_dropdown('stasiun[]', $stasiuns, '', 'class="form-control"'); ?> 
                 </div>
               </div>
 
@@ -77,11 +73,7 @@
                 <label for="penyumbang" class="col-sm-3 control-label">Penyumbang</label>
 
                 <div class="col-sm-9">
-                  <select name="penyumbang" class="form-control">
-                    <option value="">-- Pilih Penyumbang --</option>
-                    <option value="1">111111 - Toni</option>
-                    <option value="0">222222 - Sucipto</option>
-                  </select>
+                    <?= form_dropdown('penyumbang[]', $penyumbangs, '', 'class="form-control"'); ?>
                 </div>
               </div>
               

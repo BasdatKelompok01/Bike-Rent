@@ -30,21 +30,17 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('penugasan/add'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('index.php/penugasan/add'), 'class="form-horizontal"');  ?> 
             <div class="form-group">
-                <label for="role" class="col-sm-3 control-label">Petugas</label>
+                <label for="petugas" class="col-sm-3 control-label">Petugas</label>
 
                 <div class="col-sm-9">
-                  <select name="petugas" class="form-control">
-                    <option value="">--Pilih Petugas--</option>
-                    <option value="1">111111 - Toni</option>
-                    <option value="0">222222 - Sucipto</option>
-                  </select>
+                  <?= form_dropdown('petugas[]', $petugass, '', 'class="form-control"'); ?> 
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Tanggal Mulai</label>
+                <label for="tglMulai" class="col-sm-3 control-label">Waktu Mulai</label>
 
                 <div class="col-sm-9">
                 <input type="text" name="tglMulai" id="tglMulai" class="form-control datetimemask">
@@ -52,7 +48,7 @@
               </div>
 
               <div class="form-group">
-                <label for="lastname" class="col-sm-3 control-label">Tanggal Selesai</label>
+                <label for="tglSelesai" class="col-sm-3 control-label">Waktu Selesai</label>
 
                 <div class="col-sm-9">
                   <input type="text" name="tglSelesai" id="tglSelesai" class="form-control datetimemask">   
@@ -60,14 +56,10 @@
               </div>
 
               <div class="form-group">
-                <label for="role" class="col-sm-3 control-label">Stasiun</label>
+                <label for="stasiun" class="col-sm-3 control-label">Stasiun</label>
 
                 <div class="col-sm-9">
-                  <select name="stasiun" class="form-control">
-                    <option value="">--Pilih Stasiun--</option>
-                    <option value="1">123123 - Stasiun Basdat Depok 1</option>
-                    <option value="0">321321 - Stasiun Basdat Depok 2</option>
-                  </select>
+                  <?= form_dropdown('stasiun[]', $stasiuns, '', 'class="form-control"'); ?> 
                 </div>
               </div>
               
@@ -113,8 +105,8 @@
     //$('.datetimemask').val(new Date());
   
     $('.datetimemask').inputmask("datetime",{
-      mask: "1-2-y h:s", 
-      placeholder: "dd-mm-yyyy hh:mm", 
+      mask: "y-m-d h:s", 
+      placeholder: "yyyy-mm-dd hh:mm", 
       leapday: "-02-29", 
       separator: "-", 
       alias: "dd-mm-yyyy"

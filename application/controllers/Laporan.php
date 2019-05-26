@@ -5,11 +5,11 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('user_model', 'user_model');
+			$this->load->model('laporan_model', 'laporan_model');
 		}
 
 		public function index(){
-			$data['all_users'] =  $this->user_model->get_all_users();
+			$data['all_laporan'] =  $this->laporan_model->get_all_laporan();
 			$data['view'] = 'laporan/laporan';
 			$this->load->view('layout', $data);
 		}

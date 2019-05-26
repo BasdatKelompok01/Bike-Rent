@@ -17,12 +17,12 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('penugasan/edit/'.$user['id']), 'class="form-horizontal"' )?> 
+            <?php echo form_open(base_url('index.php/sepeda/edit/'.$sepeda['nomor']), 'class="form-horizontal"' )?> 
             <div class="form-group">
                 <label for="merk" class="col-sm-3 control-label">Merk</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="merk" value="BMX" id="merk" class="form-control">
+                <input type="text" name="merk" value="<?php echo $sepeda['merk'];?>" id="merk" class="form-control">
                 </div>
               </div>
 
@@ -30,7 +30,7 @@
                 <label for="jenis" class="col-sm-3 control-label">Jenis</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="jenis" value="Dewasa" id="jenis" class="form-control">
+                <input type="text" name="jenis" value="<?php echo $sepeda['jenis'];?>" id="jenis" class="form-control">
                 </div>
               </div>
 
@@ -40,8 +40,8 @@
                 <div class="col-sm-9">
                   <select name="status" class="form-control">
                     <option value="">-- Pilih --</option>
-                    <option value="1" selected>Tersedia</option>
-                    <option value="0">Tidak Tersedia</option>
+                    <option value="1" <?= ($sepeda['status'] == 't')?'selected': '' ?> >Tersedia</option>
+                    <option value="0" <?= ($sepeda['status'] == 'f')?'selected': '' ?> >Tidak Tersedia</option>
                   </select>
                 </div>
               </div>
@@ -50,11 +50,7 @@
                 <label for="stasiun" class="col-sm-3 control-label">Stasiun</label>
 
                 <div class="col-sm-9">
-                  <select name="stasiun" class="form-control">
-                    <option value="">-- Pilih Stasiun --</option>
-                    <option value="1" selected>123123 - Stasiun Basdat Depok 1</option>
-                    <option value="0">321321 - Stasiun Basdat Depok 2</option>
-                  </select>
+                  <?= form_dropdown('stasiun[]', $stasiuns, $selectedstasiun, 'class="form-control"'); ?>
                 </div>
               </div>
 
@@ -62,19 +58,15 @@
                 <label for="penyumbang" class="col-sm-3 control-label">Penyumbang</label>
 
                 <div class="col-sm-9">
-                  <select name="penyumbang" class="form-control">
-                    <option value="">-- Pilih Penyumbang --</option>
-                    <option value="1" selected>111111 - Toni</option>
-                    <option value="0">222222 - Sucipto</option>
-                  </select>
+                  <?= form_dropdown('penyumbang[]', $penyumbangs, $selectedanggota, 'class="form-control"'); ?>
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="col-md-11 text-center">
                 
-                <input type="submit" name="submit" value="Ubah" class="btn btn-primary">
-                <a href="<?= base_url('sepeda'); ?>" class="btn btn-default">Batal</a>
+                <input type="submit" name="submit" value="Update" class="btn btn-primary">
+                <a href="<?= base_url('index.php/sepeda'); ?>" class="btn btn-default">Batal</a>
                 </div>
               </div>
             <?php echo form_close(); ?>
