@@ -112,7 +112,7 @@
 		public function pinjam($id = 0){
 			$data = array(
 				'sepeda' => $id,
-				'datetime_pinjam' => date('Y-m-d : h:m:s'),
+				'datetime_pinjam' => date('Y-m-d H:i'),
 			);
 			$data = $this->security->xss_clean($data);
 			$result = $this->peminjaman_model->add_peminjaman($data);

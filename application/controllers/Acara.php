@@ -32,28 +32,38 @@
 					$this->load->view('layout', $data);
 				}
 				else{
-					$data = array(
-						'judul' => $this->input->post('judul'),
-						'deskripsi' => $this->input->post('deskripsi'),
-						'is_free' => $this->input->post('gratis'),
-						'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
-						'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
-					);
-					$data = $this->security->xss_clean($data);
-					$result = $this->acara_model->add_acara($data);
-
-					foreach($this->input->post('stasiun') as $sid){
-						$data2 = array(
-							'id_acara' => $result,
-							'id_stasiun' => $sid,
-						);
-						$data2 = $this->security->xss_clean($data2);
-						$result2 = $this->Acara_Stasiun_model->add_acara_stasiun($data2);
+					$start = date('Y-m-d',strtotime($this->input->post('tglMulai')));
+					$end = date('Y-m-d',strtotime($this->input->post('tglSelesai')));
+					if($end < $start){
+						$this->session->set_flashdata('error', 'Tanggal selesai harus lebih besar dari tanggal mulai!');
+						$data['view'] = 'acara/acara_add';
+						$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+						$this->load->view('layout', $data);
 					}
-
-					if($result && $result2){
-						$this->session->set_flashdata('msg', 'Data Acara Berhasil Ditambahkan!');
-						redirect(base_url('index.php/acara'));
+					else{
+						$data = array(
+							'judul' => $this->input->post('judul'),
+							'deskripsi' => $this->input->post('deskripsi'),
+							'is_free' => $this->input->post('gratis'),
+							'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
+							'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
+						);
+						$data = $this->security->xss_clean($data);
+						$result = $this->acara_model->add_acara($data);
+	
+						foreach($this->input->post('stasiun') as $sid){
+							$data2 = array(
+								'id_acara' => $result,
+								'id_stasiun' => $sid,
+							);
+							$data2 = $this->security->xss_clean($data2);
+							$result2 = $this->Acara_Stasiun_model->add_acara_stasiun($data2);
+						}
+	
+						if($result && $result2){
+							$this->session->set_flashdata('msg', 'Data Acara Berhasil Ditambahkan!');
+							redirect(base_url('acara'));
+						}
 					}
 				}
 			}
@@ -82,28 +92,40 @@
 					$this->load->view('layout', $data);
 				}
 				else{
-					$data = array(
-						'judul' => $this->input->post('judul'),
-						'deskripsi' => $this->input->post('deskripsi'),
-						'is_free' => $this->input->post('gratis'),
-						'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
-						'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
-					);
-					$data = $this->security->xss_clean($data);
-					$result = $this->acara_model->edit_acara($data, $id);					
-
-					foreach($this->input->post('stasiun') as $sid){
-						$data2 = array(
-							'id_acara' => $id,
-							'id_stasiun' => $sid,
-						);
-						$data2 = $this->security->xss_clean($data2);
-						$result2 = $this->Acara_Stasiun_model->edit_acara_stasiun($data2);
+					$start = date('Y-m-d',strtotime($this->input->post('tglMulai')));
+					$end = date('Y-m-d',strtotime($this->input->post('tglSelesai')));
+					if($end < $start){
+						$this->session->set_flashdata('error', 'Tanggal selesai harus lebih besar dari tanggal mulai!');
+						$data['acara'] = $this->acara_model->get_acara_by_id($id);
+						$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
+						$data['acarastasiun'] = $this->Acara_Stasiun_model->get_acara_stasiun($id);
+						$data['view'] = 'acara/acara_edit';
+						$this->load->view('layout', $data);
 					}
-
-					if($result && $result2){
-						$this->session->set_flashdata('msg', 'Acara Berhasil Diupdate!');
-						redirect(base_url('index.php/acara'));
+					else{
+						$data = array(
+							'judul' => $this->input->post('judul'),
+							'deskripsi' => $this->input->post('deskripsi'),
+							'is_free' => $this->input->post('gratis'),
+							'tgl_mulai' => date('Y-m-d',strtotime($this->input->post('tglMulai'))),
+							'tgl_akhir' => date('Y-m-d',strtotime($this->input->post('tglSelesai'))),
+						);
+						$data = $this->security->xss_clean($data);
+						$result = $this->acara_model->edit_acara($data, $id);					
+	
+						foreach($this->input->post('stasiun') as $sid){
+							$data2 = array(
+								'id_acara' => $id,
+								'id_stasiun' => $sid,
+							);
+							$data2 = $this->security->xss_clean($data2);
+							$result2 = $this->Acara_Stasiun_model->edit_acara_stasiun($data2);
+						}
+	
+						if($result && $result2){
+							$this->session->set_flashdata('msg', 'Acara Berhasil Diupdate!');
+							redirect(base_url('acara'));
+						}
 					}
 				}
 			}
@@ -124,7 +146,7 @@
 			$sql2 = 'DELETE FROM acara WHERE id_acara = ?';
 			$this->db->query($sql2, array($id));
 			$this->session->set_flashdata('msg', 'Acara Berhasil Dihapus!');
-			redirect(base_url('index.php/acara'));
+			redirect(base_url('acara'));
 		}
 
 	}

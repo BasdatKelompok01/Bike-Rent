@@ -28,7 +28,7 @@
 				else{
 					$data = array(
 						'sepeda' => $this->input->post('sepeda'),
-						'datetime_pinjam' => date('Y-m-d : h:m:s'),
+						'datetime_pinjam' => date('Y-m-d H:i'),
 					);
 					$data = $this->security->xss_clean($data);
 					$result = $this->peminjaman_model->add_peminjaman($data);

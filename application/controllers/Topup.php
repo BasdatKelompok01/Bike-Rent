@@ -25,7 +25,7 @@
 				else{
 					$data = array(
 						'nominal' => $this->input->post('nominal'),
-						'datetime_now' => date('Y-m-d : h:m:s'),
+						'datetime_now' => date('Y-m-d H:i'),
 					);
 					$data = $this->security->xss_clean($data);
 					$result = $this->transaksi_model->add_transaksi_topup($data);
