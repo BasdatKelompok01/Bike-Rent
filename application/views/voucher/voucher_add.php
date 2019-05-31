@@ -36,7 +36,7 @@
                 <label for="nama" class="col-sm-3 control-label">Nama</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="nama" id="nama" class="form-control">
+                <input type="text" name="nama" maxlength=255 id="nama" class="form-control">
                 </div>
               </div>
 
@@ -44,7 +44,7 @@
                 <label for="kategori" class="col-sm-3 control-label">Kategori</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="kategori" id="kategori" class="form-control">
+                <input type="text" name="kategori" maxlength=255 id="kategori" class="form-control">
                 </div>
               </div>
 
@@ -52,7 +52,7 @@
                 <label for="poin" class="col-sm-3 control-label">Nilai Poin</label>
 
                 <div class="col-sm-9">
-                <input type="number" name="poin" id="poin" class="form-control">
+                <input type="number" name="poin" id="poin" maxlength=8 class="form-control">
                 </div>
               </div>
 
@@ -60,7 +60,7 @@
                 <label for="deskripsi" class="col-sm-3 control-label">Deskripsi</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="deskripsi" id="deskripsi" class="form-control">
+                <input type="text" name="deskripsi" id="deskripsi" maxlength=255 class="form-control">
                 </div>
               </div>
 
@@ -68,7 +68,7 @@
                 <label for="jumlah" class="col-sm-3 control-label">Jumlah</label>
 
                 <div class="col-sm-9">
-                <input type="number" name="jumlah" id="jumlah" class="form-control">
+                <input type="number" name="jumlah" id="jumlah" min=1 class="form-control">
                 </div>
               </div>
 

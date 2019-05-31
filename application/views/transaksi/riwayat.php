@@ -24,7 +24,7 @@
               <td><?= $num; ?></td>
               <td><?= date('d F Y H:i', strtotime($row['date_time'])); ?></td>
               <td><?= $row['jenis']; ?></td>
-              <td><?= $row['total']; ?></td>
+              <td><?= number_format($row['total'],0,'',''); ?></td>
             </tr>
             <?php $num++; ?>
             <?php endforeach; ?>

@@ -10,7 +10,8 @@
 
 		public function get_all_transasi_by_ktp(){
 			$nokartu = $this->get_no_kartu();
-			$sql = 'SELECT a.date_time, jenis, (nominal - (case when denda is null then 0 else denda end)) as total FROM transaksi a LEFT JOIN transaksi_khusus_peminjaman b ON a.no_kartu_anggota = b.no_kartu_anggota and a.date_time = b.date_time LEFT JOIN peminjaman c ON b.no_kartu_peminjam = c.no_kartu_anggota and b.datetime_pinjam = c.datetime_pinjam and b.no_sepeda = c.nomor_sepeda and b.id_stasiun = c.id_stasiun WHERE a.no_kartu_anggota = ? ORDER BY date_time desc';
+			//$sql = 'SELECT a.date_time, jenis, (biaya + (case when denda is null then 0 else denda end)) as total FROM transaksi a LEFT JOIN transaksi_khusus_peminjaman b ON a.no_kartu_anggota = b.no_kartu_anggota and a.date_time = b.date_time LEFT JOIN peminjaman c ON b.no_kartu_peminjam = c.no_kartu_anggota and b.datetime_pinjam = c.datetime_pinjam and b.no_sepeda = c.nomor_sepeda and b.id_stasiun = c.id_stasiun WHERE a.no_kartu_anggota = ? ORDER BY date_time desc';
+			$sql = 'SELECT a.date_time, jenis, nominal as total FROM transaksi a LEFT JOIN transaksi_khusus_peminjaman b ON a.no_kartu_anggota = b.no_kartu_anggota and a.date_time = b.date_time LEFT JOIN peminjaman c ON b.no_kartu_peminjam = c.no_kartu_anggota and b.datetime_pinjam = c.datetime_pinjam and b.no_sepeda = c.nomor_sepeda and b.id_stasiun = c.id_stasiun WHERE a.no_kartu_anggota = ? ORDER BY date_time desc';
 			$query = $this->db->query($sql, array($nokartu));
 			return $result = $query->result_array();
 		}

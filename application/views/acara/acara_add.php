@@ -36,7 +36,7 @@
                 <label for="judul" class="col-sm-3 control-label">Judul</label>
 
                 <div class="col-sm-9">
-                  <input type="text" name="judul" id="judul" class="form-control">   
+                  <input type="text" name="judul" id="judul" maxlength=100 class="form-control">   
                 </div>
               </div>
 
@@ -44,7 +44,7 @@
                 <label for="deskripsi" class="col-sm-3 control-label">Deskripsi</label>
 
                 <div class="col-sm-9">
-                  <input type="text" name="deskripsi" id="deskripsi" class="form-control">   
+                  <input type="text" name="deskripsi" id="deskripsi" maxlength=200 class="form-control">   
                 </div>
               </div>
 

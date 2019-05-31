@@ -22,7 +22,7 @@
                 <label for="merk" class="col-sm-3 control-label">Merk</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="merk" value="<?php echo $sepeda['merk'];?>" id="merk" class="form-control">
+                <input type="text" name="merk" maxlength=10 value="<?php echo $sepeda['merk'];?>" id="merk" class="form-control">
                 </div>
               </div>
 
@@ -30,7 +30,7 @@
                 <label for="jenis" class="col-sm-3 control-label">Jenis</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="jenis" value="<?php echo $sepeda['jenis'];?>" id="jenis" class="form-control">
+                <input type="text" name="jenis" maxlength=50 value="<?php echo $sepeda['jenis'];?>" id="jenis" class="form-control">
                 </div>
               </div>
 

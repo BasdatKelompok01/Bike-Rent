@@ -22,7 +22,7 @@
                 <label for="nama" class="col-sm-3 control-label">Nama</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="nama" value="<?php echo $stasiun['nama'];?>" id="nama" class="form-control">
+                <input type="text" name="nama" maxlength=50 value="<?php echo $stasiun['nama'];?>" id="nama" class="form-control">
                 </div>
               </div>
 
@@ -30,7 +30,7 @@
                 <label for="alamat" class="col-sm-3 control-label">Alamat</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="alamat" value="<?php echo $stasiun['alamat'];?>" id="alamat" class="form-control">
+                <input type="text" name="alamat" maxlength=200 value="<?php echo $stasiun['alamat'];?>" id="alamat" class="form-control">
                 </div>
               </div>
 
@@ -38,7 +38,7 @@
                 <label for="latitude" class="col-sm-3 control-label">Latitude</label>
 
                 <div class="col-sm-9">
-                <input type="number" name="latitude" value="<?php echo $stasiun['lat'];?>" id="latitude" class="form-control">
+                <input type="number" name="latitude" value="<?php echo number_format($stasiun['lat'],0,'','');?>" id="latitude" class="form-control">
                 </div>
               </div>
 
@@ -46,7 +46,7 @@
                 <label for="longitude" class="col-sm-3 control-label">Longitude</label>
 
                 <div class="col-sm-9">
-                <input type="number" name="longitude" value="<?php echo $stasiun['long'];?>" id="longitude" class="form-control">
+                <input type="number" name="longitude" value="<?php echo number_format($stasiun['long'],0,'','');?>" id="longitude" class="form-control">
                 </div>
               </div>
 

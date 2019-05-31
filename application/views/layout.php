@@ -32,6 +32,14 @@
 			    </div>
 			  <?php endif; ?> 
 			
+		<?php if($this->session->flashdata('error') != ''): ?>
+			    <div class="alert alert-danger flash-msg alert-dismissible">
+			      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			      <h4> Error!</h4>
+			      <?= $this->session->flashdata('error'); ?> 
+			    </div>
+			  <?php endif; ?>
+
 			<section id="container">
 				<!--header start-->
 				<header class="header white-bg">

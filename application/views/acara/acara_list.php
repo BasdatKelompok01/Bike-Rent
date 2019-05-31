@@ -30,8 +30,8 @@
             <td><?= $nomor; ?></td>
             <td><?= $row['judul']; ?></td>
             <td><?= $row['deskripsi']; ?></td>
-            <td><?= Date('d M Y', strtotime($row['tgl_mulai'])); ?></td>
-            <td><?= Date('d M Y', strtotime($row['tgl_akhir'])); ?></td>
+            <td><?= Date('d F Y', strtotime($row['tgl_mulai'])); ?></td>
+            <td><?= Date('d F Y', strtotime($row['tgl_akhir'])); ?></td>
             <td>
                 <?php 
                     if($row['is_free'] == 't') { 

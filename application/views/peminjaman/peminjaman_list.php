@@ -32,8 +32,8 @@
                     <td><?= $row['id_stasiun'] . ' - ' . $row['nama']; ?></td>
                     <td><?= date('d F Y H:i', strtotime($row['datetime_pinjam'])); ?></td>
                     <td><?= ($row['datetime_kembali'] == null ? '-' : date('d F Y H:i', strtotime($row['datetime_kembali']))); ?></td>
-                    <td><?= ($row['biaya'] == null ? '-' : $row['biaya']); ?></td>
-                    <td><?= ($row['denda'] == null ? '-' : $row['denda']); ?></td>
+                    <td><?= ($row['biaya'] == null ? '-' : number_format($row['biaya'],0,'','')); ?></td>
+                    <td><?= ($row['denda'] == null ? '-' : number_format($row['denda'],0,'','')); ?></td>
                     <?php if($this->session->userdata('role') == 'Anggota') { ?> 
                         <td align="center">
                           <?php if ($row['datetime_kembali'] == null) { ?>

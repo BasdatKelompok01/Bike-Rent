@@ -37,7 +37,7 @@
                 <label for="nama" class="col-sm-3 control-label">Nama</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="nama" id="nama" class="form-control">
+                <input type="text" name="nama" id="nama" maxlength=50 class="form-control">
                 </div>
               </div>
 
@@ -45,7 +45,7 @@
                 <label for="alamat" class="col-sm-3 control-label">Alamat</label>
 
                 <div class="col-sm-9">
-                <input type="text" name="alamat" id="alamat" class="form-control">
+                <input type="text" name="alamat" id="alamat" maxlength=200 class="form-control">
                 </div>
               </div>
 

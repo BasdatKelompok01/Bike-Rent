@@ -17,12 +17,13 @@
 			 $tot = $this->count_biaya($data['datetime_pinjam'], $data['datetime_kembali']);
 			 //print_r($tot);
 			 $totInt = (int)$tot;
-			 if($totInt <= 10){
-				$biaya = 1000 * $totInt;
-			 }
-			 else{
-				$biaya = 10000;
-			 }
+			// if($totInt <= 10){
+			//	$biaya = 1000 * ($totInt + 1);
+			// }
+			// else{
+			//	$biaya = 10000;
+			 //}
+			$biaya = 1000 * ($totInt + 1);
 			// print_r($data['datetime_pinjam']);
 			// print_r($data['datetime_kembali']);
 			$sql = 'UPDATE peminjaman SET biaya = ?, datetime_kembali = ? WHERE no_kartu_anggota = ? and datetime_pinjam = ? and nomor_sepeda = ? and id_stasiun = ?';
@@ -58,11 +59,18 @@
 		}
 
 		public function count_biaya($prm1, $prm2){
+			//$datetime1 = new DateTime($prm1);
+			//$datetime2 = new DateTime($prm2);
+
+			//$interval = $datetime1->diff($datetime2);
+			//return $interval->format('%h');
 			$datetime1 = new DateTime($prm1);
 			$datetime2 = new DateTime($prm2);
-
-			$interval = $datetime1->diff($datetime2);
-			return $interval->format('%h');
+			$interval = date_diff($datetime1, $datetime2);
+ 			$days = $interval->days;
+  			$hours=$interval->format('%h');
+			$total = ($days * 24) + $hours;
+			return $total;
 		}
 
 		public function get_id_stasiun($id){

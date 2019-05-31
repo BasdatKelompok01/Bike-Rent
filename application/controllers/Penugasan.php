@@ -31,8 +31,8 @@
 					$this->load->view('layout', $data);
 				}
 				else{
-					$start = date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai')));
-					$end = date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai')));
+					$start = date('Y-m-d H:i:s',strtotime($this->input->post('tglMulai')));
+					$end = date('Y-m-d H:i:s',strtotime($this->input->post('tglSelesai')));
 
 					if($end <= $start){
 						$this->session->set_flashdata('error', 'Waktu selesai harus lebih besar dari Waktu mulai!');
@@ -40,19 +40,20 @@
 						$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
 						$data['petugass'] = $this->petugas_model->get_list_petugas();
 						$this->load->view('layout', $data);
+						$this->session->set_flashdata('error', '');
 					}
 					else{
 						$data = array(
 							'petugas' => $this->input->post('petugas'),
-							'tglMulai' => date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai'))),
-							'tglSelesai' =>date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai'))),
+							'tglMulai' => date('Y-m-d H:i:s',strtotime($this->input->post('tglMulai'))),
+							'tglSelesai' =>date('Y-m-d H:i:s',strtotime($this->input->post('tglSelesai'))),
 							'stasiun' => $this->input->post('stasiun'),
 						);
 						$data = $this->security->xss_clean($data);
 						$result = $this->penugasan_model->add_penugasan($data);
 						if($result){
 							$this->session->set_flashdata('msg', 'Data Penugasan Berhasil Ditambahkan!');
-							redirect(base_url('penugasan'));
+							redirect(base_url('index.php/penugasan'));
 						}
 					}
 				}
@@ -83,8 +84,8 @@
 					$this->load->view('layout', $data);
 				}
 				else{
-					$start = date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai')));
-					$end = date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai')));
+					$start = date('Y-m-d H:i:s',strtotime($this->input->post('tglMulai')));
+					$end = date('Y-m-d H:i:s',strtotime($this->input->post('tglSelesai')));
 
 					if($end <= $start){
 						$this->session->set_flashdata('error', 'Waktu selesai harus lebih besar dari Waktu mulai!');
@@ -95,19 +96,20 @@
 						$data['selectedpetugas'] = $this->penugasan_model->get_selected_petugas($id, $id2, $id3);
 						$data['view'] = 'penugasan/penugasan_edit';
 						$this->load->view('layout', $data);
+						$this->session->set_flashdata('error', '');
 					}
 					else{
 						$data = array(
 							'petugas' => $this->input->post('petugas'),
-							'tglMulai' => date('Y-m-d : H:i:s',strtotime($this->input->post('tglMulai'))),
-							'tglSelesai' =>date('Y-m-d : H:i:s',strtotime($this->input->post('tglSelesai'))),
+							'tglMulai' => date('Y-m-d H:i:s',strtotime($this->input->post('tglMulai'))),
+							'tglSelesai' =>date('Y-m-d H:i:s',strtotime($this->input->post('tglSelesai'))),
 							'stasiun' => $this->input->post('stasiun'),
 						);
 						$data = $this->security->xss_clean($data);
 						$result = $this->penugasan_model->edit_penugasan($data, $id, $id2, $id3);
 						if($result){
 							$this->session->set_flashdata('msg', 'Penugasan Berhasil Diupdate!');
-							redirect(base_url('penugasan'));
+							redirect(base_url('index.php/penugasan'));
 						}
 					}
 				}
@@ -134,7 +136,7 @@
 			$sql = 'DELETE FROM penugasan WHERE ktp = ? and start_datetime = ? and id_stasiun = ?';
 			$this->db->query($sql, array($vktp, $vstart, $vstas));
 			$this->session->set_flashdata('msg', 'Penugasan Berhasil Dihapus!');
-			redirect(base_url('penugasan'));
+			redirect(base_url('index.php/penugasan'));
 		}
 
 	}

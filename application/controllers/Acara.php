@@ -39,6 +39,7 @@
 						$data['view'] = 'acara/acara_add';
 						$data['stasiuns'] = $this->stasiun_model->get_list_stasiun();
 						$this->load->view('layout', $data);
+						$this->session->set_flashdata('error', '');
 					}
 					else{
 						$data = array(
@@ -62,7 +63,7 @@
 	
 						if($result && $result2){
 							$this->session->set_flashdata('msg', 'Data Acara Berhasil Ditambahkan!');
-							redirect(base_url('acara'));
+							redirect(base_url('index.php/acara'));
 						}
 					}
 				}
@@ -101,6 +102,7 @@
 						$data['acarastasiun'] = $this->Acara_Stasiun_model->get_acara_stasiun($id);
 						$data['view'] = 'acara/acara_edit';
 						$this->load->view('layout', $data);
+						$this->session->set_flashdata('error', '');
 					}
 					else{
 						$data = array(
@@ -124,7 +126,7 @@
 	
 						if($result && $result2){
 							$this->session->set_flashdata('msg', 'Acara Berhasil Diupdate!');
-							redirect(base_url('acara'));
+							redirect(base_url('index.php/acara'));
 						}
 					}
 				}
@@ -146,7 +148,7 @@
 			$sql2 = 'DELETE FROM acara WHERE id_acara = ?';
 			$this->db->query($sql2, array($id));
 			$this->session->set_flashdata('msg', 'Acara Berhasil Dihapus!');
-			redirect(base_url('acara'));
+			redirect(base_url('index.php/acara'));
 		}
 
 	}

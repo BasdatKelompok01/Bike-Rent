@@ -32,7 +32,7 @@
                 <td><?= $row['id_voucher']; ?></td>
                 <td><?= $row['nama']; ?></td>
                 <td><?= $row['kategori']; ?></td>
-                <td><?= $row['nilai_poin']; ?></td>
+                <td><?= number_format($row['nilai_poin'],0,'',''); ?></td>
                 <td><?= $row['deskripsi']; ?></td>
                 <td><?= ($row['diklaim'] == null) ? '-' : $row['diklaim']; ?></td>
                 <?php if($this->session->userdata('role') == 'Admin') { ?> 

@@ -4,6 +4,19 @@
 		public function add_penugasan($data){
 			$sql = 'INSERT INTO penugasan Values (?,?,?,?)';
 			$query = $this->db->query($sql, array($data['petugas'], $data['tglMulai'], $data['stasiun'], $data['tglSelesai'] ));
+
+			//UPDATE GAJI
+			$datetime1 = new DateTime($data['tglMulai']);
+			$datetime2 = new DateTime($data['tglSelesai']);
+			$interval = date_diff($datetime1, $datetime2);
+ 			$days = $interval->days;
+  			$hours=$interval->format('%h');
+			$total = ($days * 24) + $hours;
+
+			$newGaji = ($total + 1) * 30000;
+			$sql2 = 'UPDATE petugas set gaji = ? where ktp = ?';
+			$query2 = $this->db->query($sql2, array($newGaji, $data['petugas'] ));
+
 			return true;
 			// print_r($query);
 		}
@@ -44,6 +57,19 @@
 		public function edit_penugasan($data, $id1, $id2, $id3){
 			$sql = 'UPDATE penugasan SET ktp = ?, start_datetime = ?, end_datetime = ?, id_stasiun = ? WHERE ktp = ? and start_datetime = ? and id_stasiun = ?';
 			$query = $this->db->query($sql, array($data['petugas'], $data['tglMulai'], $data['tglSelesai'], $data['stasiun'], $id1, str_replace("%20"," ",$id2), $id3));
+			
+			//UPDATE GAJI
+			$datetime1 = new DateTime($data['tglMulai']);
+			$datetime2 = new DateTime($data['tglSelesai']);
+			$interval = date_diff($datetime1, $datetime2);
+ 			$days = $interval->days;
+  			$hours=$interval->format('%h');
+			$total = ($days * 24) + $hours;
+
+			$newGaji = ($total + 1) * 30000;
+			$sql2 = 'UPDATE petugas set gaji = ? where ktp = ?';
+			$query2 = $this->db->query($sql2, array($newGaji, $data['petugas'] ));
+
 			return true;
 		}
 	}

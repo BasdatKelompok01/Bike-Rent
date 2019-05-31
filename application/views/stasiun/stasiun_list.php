@@ -26,10 +26,10 @@
             <td><?= $nomor; ?></td>
             <td><?= $row['nama']; ?></td>
             <td><?= $row['alamat']; ?></td>
-            <td><?= $row['lat']; ?></td>
-            <td><?= $row['long']; ?></td>
+            <td><?= number_format($row['lat'],0,'',''); ?></td>
+            <td><?= number_format($row['long'],0,'',''); ?></td>
             <?php if($this->session->userdata('role') == 'Admin') { ?> 
-                <td align="center">
+                <td align="center" nowrap="nowrap">
                   <a href="<?= base_url('index.php/stasiun/edit/' . $row['id_stasiun']); ?>" class="btn btn-primary btn-sm">Update</a>
                   <button class="btn btn-danger btn-sm konfirmasiHapus-stasiun" data-id="<?php echo $row['id_stasiun']; ?>" data-toggle="modal" data-target="#konfirmasiHapus">Hapus</button>
                 </td>

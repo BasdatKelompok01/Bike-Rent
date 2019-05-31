@@ -27,7 +27,7 @@
                 <td><?= $row['id_laporan']; ?></td>
                 <td><?= date('d F Y H:i', strtotime($row['datetime_pinjam'])); ?></td>
                 <td><?= $row['nama']; ?></td>
-                <td><?= $row['denda']; ?></td>
+                <td><?= number_format($row['denda'],0,'',''); ?></td>
                 <td><?= $row['status']; ?></td>
               </tr>
               <?php $num++; ?>
